@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">desPISTA2</string>
+    <string name="titulo" translatable="false">desPISTA2</string>
+    <string name="txtUsuario">Usuario</string>
+    <string name="txtContrasena">Contraseña</string>
+    <string name="btnEntrar">Entrar</string>
+    <string name="btnRegistrar">Registrarse</string>
+    <string name="txtAjustes">Ajustes</string>
+    <string name="btnIdioma">Cambiar idioma</string>
+    <string name="btnAtras2">Atrás</string>
+    <string name="txtUsuarioR">Introduce un usuario</string>
+    <string name="txtContrasenaR">Introduce una contraseña</string>
+    <string name="btnRegistrarse">Registrarse</string>
+    <string name="txtRegistro">Registrarse</string>
+    <string name="txtEligeC">Escoge una categoría</string>
+    <string name="txtEligeN">Escoge un nivel</string>
+    <string name="btnAtras1">Atrás</string>
+    <string name="txtRespuesta">Escribe tu respuesta</string>
+    <string name="btnComprobar">Comprobar</string>
+    <string name="btnAtras">Atrás</string>
+    <string name="btnPista">Pista</string>
+    <string name="btnResolver">Resolver</string>
+    <string name="btnCompartir">Compartir</string>
+</resources>

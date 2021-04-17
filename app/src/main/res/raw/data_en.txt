@@ -1,0 +1,128 @@
+Movies and TV Series;Famous characters;Countries of the world;Monuments of the world;Famous inventions and discoveries
+
+Movies and TV Series
+Harry Potter;Aquí no hay quien viva;The lion king;La casa de papel;Titanic
+
+Harry Potter
+1;This saga is based on 7 books
+2;The lead characters are 3 friends
+3;Daniel Radcliffe performs the main character
+4;They study in a school where they use wands and brooms
+5;Press here to see the image clue
+
+Aquí no hay quien viva
+1;Spanish show from the early 00s
+2;One of the most famous series in Spain
+3;The characters live in Desengaño 21
+4;One of the most remembered sentences from one of the characters is: "Un poquito de por favor"
+5;Press here to see the image clue
+
+The lion king
+1;1994 animated film
+2;Based on William Shakespeare's Hamlet
+3;The characters are animals from the African Savannah
+4;Film created by the Walt Disney company
+5;Press here to see the image clue
+
+La casa de papel
+1;Netflix bought this Spanish show
+2;The main characters are dressed up
+3;The main characters plan to get something from a building
+4;They use the image of a famous Spanish painter
+5;Press here to see the image clue
+
+Titanic
+1;Film that tells a based on real life event from the 20th century
+2;Many people didn't survive in the accident
+3;The characters are in the Atlantic Ocean
+4;When built, it was the biggest transatlantic in the world
+5;Press here to see the image clue
+
+Famous characters
+Michael Jackson;Albert Einstein;Marie Curie;Cleopatra;Wolfgang Amadeus Mozart
+
+Michael Jackson
+1;Singer who began in the music industry with his brothers.
+2;His album is one of the best selling albums in the world
+3;He died on June 25th 2009
+4;He suffered from vitiligo
+5;Press here to see the image clue
+
+Albert Einstein
+1;He was born on March 14th 1879
+2;He died at the age of 76
+3;Jewish-German physicist
+4;E=mc2
+5;Press here to see the image clue
+
+Marie Curie
+1;Polish scientific born in 1867
+2;She died in 1934 at the age of 66
+3;She received two Nobel Prizes in Physics and Chemistry
+4;She discovered radium and polonium
+5;Press here to see the image clue
+
+Cleopatra
+1;She was born in 69 B.C.
+2;She governed Ancient Egypt
+3;It's said that she committed suicide letting a cobra bite her
+4;Elizabeth Taylor performed her
+5;Press here to see the image clue
+
+Wolfgang Amadeus Mozart
+1;He was originally Austrian
+2;He died at the age of 35
+3;One of the most important musicians in history
+4;He showed his virtuosity with piano and violin composing plays at the age of 5
+5;Press here to see the image clue
+
+Countries of the world
+Madagascar;Greece;Japan
+
+Madagascar
+1;Its currency is Ariary
+2;Its capital is Antananarivo
+3;It is located in the southeast of Africa
+4;An animated film by Dreamworks is named after this country
+5;Press here to see the image clue
+
+Greece
+1;Its flag has two colors: blue and white
+2;It has thousands of islands in many different seas
+3;It is located under Albania, Bulgaria and Macedonia
+4;Home of the western civilization
+5;Press here to see the image clue
+
+Japan
+1;Actually it has more than 126.5 millions of citizens
+2;The Spanish band Mecano made a song about this country in 1984
+3;It is an archipielago
+4;One of its most international gastronomy is based on rice and fish
+5;Press here to see the image clue
+
+Monuments of the world
+The statue of liberty;Taj Mahal
+
+The statue of liberty
+1;It was built on October 28th 1886
+2;Its original color was bronze
+3;It is located in the Hudson river mouth
+4;It is a woman sculpture
+5;Press here to see the image clue
+
+Taj Mahal
+1;This monument in urdu means "Crown of palaces"
+2;It is a mauseleum
+3;It inspired the palace in "Aladdin"
+4;It is located in India
+5;Press here to see the image clue
+
+Famous inventions and discoveries
+Fire;
+
+Fire
+1;Discovery from the year 500.000 B.C
+2;It was very important in Classic Ancient Times
+3;It is formed by thousands of particles
+4;The Phoenix regeneration occurs thanks to this discovery
+5;Press here to see the image clue

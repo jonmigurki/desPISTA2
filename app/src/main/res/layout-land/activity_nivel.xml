@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Nivel">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:background="#E3E6F4"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtIdentificado"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/usuario"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPuntos1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/puntos"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/txtMonedas1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/monedas"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="24dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnCompartir"
+                android:layout_width="172dp"
+                android:layout_height="51dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#FFFFFF"
+                android:drawableLeft="@drawable/compartir"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="@string/btnCompartir"
+                app:backgroundTint="#3F51B5" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnAtras1"
+                android:layout_width="130dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#673AB7"
+                android:drawableLeft="@drawable/atras"
+                android:text="@string/btnAtras"
+                app:backgroundTint="#3F51B5" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C6C9DD"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtEligeN"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:fontFamily="@font/coda"
+                android:gravity="center"
+                android:text="@string/txtEligeN"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_weight="1" />
+
+            <ListView
+                android:id="@+id/lista2"
+                android:layout_width="394dp"
+                android:layout_height="288dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

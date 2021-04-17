@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Adivinanza">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="224dp"
+            android:layout_height="match_parent"
+            android:background="#E3E6F4"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtIdentificado"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/usuario"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPuntos1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/puntos"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/txtMonedas1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/monedas"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="24dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <Button
+                android:id="@+id/btnPista"
+                style="@style/boton"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="#3F51B5"
+                android:drawableLeft="@drawable/pista"
+                android:text="@string/btnPista"
+                app:backgroundTint="#3F51B5" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <Button
+                android:id="@+id/btnResolver"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="#3F51B5"
+                android:drawableLeft="@drawable/resolver"
+                android:text="@string/btnResolver"
+                android:textSize="10sp"
+                app:backgroundTint="#3F51B5" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <Button
+                android:id="@+id/btnAtras"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="#3F51B5"
+                android:drawableLeft="@drawable/atras"
+                android:text="@string/btnAtras2"
+                android:textSize="10sp"
+                app:backgroundTint="#3F51B5" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C6C9DD"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtCategoria"
+                    android:layout_width="234dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/coda"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/txtNivel"
+                    android:layout_width="116dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/coda"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txtRespuesta"
+                    android:layout_width="234dp"
+                    android:layout_height="44dp"
+                    android:background="#54FFFFFF"
+                    android:ems="10"
+                    android:fontFamily="@font/coda"
+                    android:gravity="center"
+                    android:hint="@string/txtRespuesta"
+                    android:inputType="textPersonName"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btnComprobar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#8F4545"
+                    android:drawableLeft="@drawable/comprobar"
+                    android:text="@string/btnComprobar"
+                    android:textSize="10sp"
+                    app:backgroundTint="#3F51B5" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lista3"
+                android:layout_width="384dp"
+                android:layout_height="287dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
