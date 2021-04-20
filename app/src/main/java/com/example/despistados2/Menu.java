@@ -8,18 +8,26 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Menu extends AppCompatActivity {
@@ -28,11 +36,13 @@ public class Menu extends AppCompatActivity {
 
     //Obtenemos los elementos del layout
     TextView usuario, puntos, monedas;
-    Button compartir;
+    Button compartir, mensaje;
 
     Context context;
 
     String user;
+
+    String token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +89,38 @@ public class Menu extends AppCompatActivity {
                 intent.setType("text/plain");
                 intent.setPackage("com.whatsapp");
                 startActivity(intent);
+
+            }
+        });
+
+        mensaje = (Button) findViewById(R.id.btnMensaje);
+        mensaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(!task.isSuccessful()){
+                            Log.d("ERROR EN FIREBASE", String.valueOf(task.getException()));
+                            return;
+                        }
+
+                       token = task.getResult().getToken();
+                    }
+                });
+
+
+                Log.d("TOKEN", token.toString());
+                Log.d("HOLA", "HOLAAAA");
+                //Hacemos una conexión al servidor PHP
+                ConexionBDWebService conexion = new ConexionBDWebService(Menu.this);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("token", token);
+
+                conexion.realizarConexion("firebase", hm);
 
             }
         });

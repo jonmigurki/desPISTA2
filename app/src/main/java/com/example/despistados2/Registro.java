@@ -23,6 +23,7 @@ public class Registro extends AppCompatActivity {
     //Actividad que se encarga de crear la ventana de registro
 
     EditText usuarioR, contrasenaR;
+    EditText nombreR, apellidosR;
     Button btnRegistrarse;
 
     Context context;
@@ -50,6 +51,9 @@ public class Registro extends AppCompatActivity {
         //Obtenemos los elementos del layout
         usuarioR = (EditText) findViewById(R.id.txtUsuarioR);
         contrasenaR = (EditText) findViewById(R.id.txtContrasenaR);
+        nombreR = (EditText) findViewById(R.id.txtNombre);
+        apellidosR = (EditText) findViewById(R.id.txtApellidos);
+
         btnRegistrarse = (Button) findViewById(R.id.btnRegistrarse);
 
         context = this.getApplicationContext();
@@ -62,14 +66,15 @@ public class Registro extends AppCompatActivity {
                 String m1 = "";
                 String m2 = "";
                 if(String.valueOf(getResources().getConfiguration().locale).contains("es")){
-                    m1 = "Debes rellenar los dos campos";
+                    m1 = "Debes rellenar los cuatro campos";
                     m2 = "Ya existe un usuario con ese nombre. Elige otro nombre";
                 }else{
-                    m1 = "You must write in both fields";
+                    m1 = "You must write in the four fields";
                     m2 = "There's already another user with that name. Choose another one";
                 }
 
-                    if (usuarioR.getText().toString().equals("") || contrasenaR.getText().toString().equals("")) {
+                    if (usuarioR.getText().toString().equals("") || contrasenaR.getText().toString().equals("")
+                    || nombreR.getText().toString().equals("") || apellidosR.getText().toString().equals("")) {
 
                     Toast.makeText(getApplicationContext(), m1, Toast.LENGTH_SHORT).show();
 
@@ -171,9 +176,21 @@ public class Registro extends AppCompatActivity {
 
         if(resultado.equals("1")){
             Toast.makeText(Registro.this, "El usuario introducido ya existe. Escribe otro distinto.", Toast.LENGTH_SHORT).show();
-        }else{
+
+        }else if(resultado.equals("0")){
             Toast.makeText(Registro.this, "Se procede al registro", Toast.LENGTH_SHORT).show();
 
+            ConexionBDWebService conexion = new ConexionBDWebService(Registro.this);
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("usuario", usuarioR.getText().toString());
+            hm.put("contrasena", contrasenaR.getText().toString());
+            hm.put("nombre", nombreR.getText().toString());
+            hm.put("apellidos", apellidosR.getText().toString());
+
+            conexion.realizarConexion("registro", hm);
+
+        }else{
+            Toast.makeText(Registro.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -182,6 +199,18 @@ public class Registro extends AppCompatActivity {
 
         //Si resultado == "OK" --> Se crea nuevo usuario y se lleva a Menu
         //Si resultado == "Error" --> Toast indicando error
+
+        if(resultado.equals("OK")){
+            Intent i = new Intent(Registro.this, Menu.class);
+            i.putExtra("usuario", usuarioR.getText().toString());
+            startActivity(i);
+            finish();
+        }
+
+        else{
+                Toast.makeText(Registro.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+            }
+
     }
 
 

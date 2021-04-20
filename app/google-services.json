@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "675970221195",
+    "project_id": "despistados2",
+    "storage_bucket": "despistados2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675970221195:android:de85155bb13ee38d1b808e",
+        "android_client_info": {
+          "package_name": "com.example.despistados2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675970221195-crteb5mvrv0mmd7m7vi76g4732v43rsb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_29M38PpSHmTdLQlYpfmF4EXbe1qEEk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675970221195-crteb5mvrv0mmd7m7vi76g4732v43rsb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -71,18 +71,45 @@
 
             </ListView>
 
-            <Button
-                android:id="@+id/btnCompartir"
-                style="@style/boton"
-                android:layout_width="172dp"
-                android:layout_height="51dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="28dp"
-                android:background="#FFFFFF"
-                android:drawableLeft="@drawable/compartir"
-                android:scaleX="1"
-                android:scaleY="1"
-                android:text="@string/btnCompartir" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCompartir"
+                    style="@style/boton"
+                    android:layout_width="172dp"
+                    android:layout_height="51dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="28dp"
+                    android:background="#FFFFFF"
+                    android:drawableLeft="@drawable/compartir"
+                    android:scaleX="1"
+                    android:scaleY="1"
+                    android:text="@string/btnCompartir" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnMensaje"
+                    style="@style/boton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="28dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:drawableLeft="@drawable/compartir"
+                    android:scaleX="1"
+                    android:scaleY="1"
+                    android:text="Mensaje" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

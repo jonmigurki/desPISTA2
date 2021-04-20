@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class ConexionBDWebService {
 
         this.funcion = funcion;
        // HashMap<String, String> hm = new HashMap<String, String>();
-        String usuario, contrasena, nombre, apellidos;
+        String usuario, contrasena, nombre, apellidos, token;
 
         switch (funcion) {
 
@@ -60,6 +61,14 @@ public class ConexionBDWebService {
                 comprobarUsuario(usuario, contrasena);
 
                 break;
+
+
+            case "firebase":
+
+                token = parametros.get("token");
+
+                enviarMensaje(token);
+
         }
 
 
@@ -86,6 +95,17 @@ public class ConexionBDWebService {
     private void comprobarUsuario(String usuario, String contrasena){
 
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=true";
+
+        new AsyncLogin().execute(url);
+
+    }
+
+
+    private void enviarMensaje(String token){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/enviarmensaje.php?token=" + token;
+
+        Log.d("TOKEN", token);
 
         new AsyncLogin().execute(url);
 
@@ -193,6 +213,7 @@ public class ConexionBDWebService {
                     MainActivity m = (MainActivity) context;
                     m.ejecutarResultadoIdentificacion(result);
                     break;
+
                 case "class com.example.despistados2.Registro":
                     Registro r = (Registro) context;
                     if(funcion.equals("comprobacion")){
@@ -201,6 +222,9 @@ public class ConexionBDWebService {
                         r.ejecutarResultadoRegistro(result);
                     }
                     break;
+
+
+
             }
 
 

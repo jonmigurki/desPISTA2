@@ -7,28 +7,25 @@
     android:background="@drawable/portada"
     tools:context=".Registro">
 
-    <EditText
-        android:id="@+id/txtContrasenaR"
-        android:layout_width="249dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="36dp"
-        android:background="#70FAF1FB"
-        android:ems="10"
-        android:fontFamily="@font/coda"
+    <TextView
+        android:id="@+id/txtRegistro"
+        android:layout_width="288dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="52dp"
+        android:fontFamily="@font/finger_paint"
         android:gravity="center"
-        android:hint="@string/txtContrasenaR"
-        android:inputType="textPassword"
-        android:textColor="#1E2B73"
+        android:text="@string/txtRegistro"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUsuarioR" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/txtUsuarioR"
         android:layout_width="240dp"
         android:layout_height="49dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="32dp"
         android:background="#70FAF1FB"
         android:ems="10"
         android:fontFamily="@font/coda"
@@ -37,33 +34,85 @@
         android:inputType="textPersonName"
         android:textColor="#1E2B73"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtRegistro" />
+
+    <EditText
+        android:id="@+id/txtContrasenaR"
+        android:layout_width="237dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="#70FAF1FB"
+        android:ems="10"
+        android:fontFamily="@font/coda"
+        android:gravity="center"
+        android:hint="@string/txtContrasenaR"
+        android:inputType="textPassword"
+        android:textColor="#1E2B73"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtUsuarioR" />
+
+    <TextView
+        android:id="@+id/txtDatosPersonales"
+        android:layout_width="218dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/finger_paint"
+        android:gravity="center"
+        android:text="Datos Personales:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtContrasenaR" />
+
+    <EditText
+        android:id="@+id/txtNombre"
+        android:layout_width="240dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="24dp"
+        android:background="#70FAF1FB"
+        android:ems="10"
+        android:fontFamily="@font/coda"
+        android:gravity="center"
+        android:hint="Introduce tu nombre"
+        android:inputType="textPersonName"
+        android:textColor="#1E2B73"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDatosPersonales" />
+
+    <EditText
+        android:id="@+id/txtApellidos"
+        android:layout_width="240dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:background="#70FAF1FB"
+        android:ems="10"
+        android:fontFamily="@font/coda"
+        android:gravity="center"
+        android:hint="Introduce tus apellidos"
+        android:inputType="textPersonName"
+        android:textColor="#1E2B73"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
 
     <Button
         android:id="@+id/btnRegistrarse"
         android:layout_width="182dp"
         android:layout_height="51dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="56dp"
         android:background="#3F51B5"
         android:text="@string/btnRegistrarse"
         app:backgroundTint="#3F51B5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtContrasenaR" />
-
-    <TextView
-        android:id="@+id/txtRegistro"
-        android:layout_width="288dp"
-        android:layout_height="79dp"
-        android:layout_marginTop="80dp"
-        android:fontFamily="@font/finger_paint"
-        android:gravity="center"
-        android:text="@string/txtRegistro"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtApellidos" />
 </androidx.constraintlayout.widget.ConstraintLayout>
