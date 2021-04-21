@@ -10,10 +10,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +43,7 @@ public class Menu extends AppCompatActivity {
 
     //Obtenemos los elementos del layout
     TextView usuario, puntos, monedas;
-    Button compartir, mensaje;
+    Button compartir, enviarDinero;
 
     Context context;
 
@@ -59,6 +66,20 @@ public class Menu extends AppCompatActivity {
 
         Context context2 = getBaseContext().createConfigurationContext(configuration);
         getBaseContext().getResources().updateConfiguration(configuration,context2.getResources().getDisplayMetrics());
+
+
+        //Cargo el token del dispositivo
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task.isSuccessful()){
+                    Log.d("ERROR EN FIREBASE", String.valueOf(task.getException()));
+                    return;
+                }
+
+                token = task.getResult().getToken();
+            }
+        });
 
 
         //Cargamos las categorías
@@ -93,26 +114,22 @@ public class Menu extends AppCompatActivity {
             }
         });
 
-        mensaje = (Button) findViewById(R.id.btnMensaje);
-        mensaje.setOnClickListener(new View.OnClickListener() {
+        enviarDinero = (Button) findViewById(R.id.btnEnviarDinero);
+        enviarDinero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if(monedas.getText().toString().equals("0")){
+                    Toast.makeText(Menu.this, "No tienes suficiente dinero para enviar a nadie", Toast.LENGTH_SHORT).show();
+                }else{
+
+                    getUsuariosJSON();
 
 
-                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if(!task.isSuccessful()){
-                            Log.d("ERROR EN FIREBASE", String.valueOf(task.getException()));
-                            return;
-                        }
-
-                       token = task.getResult().getToken();
-                    }
-                });
+                }
 
 
+/*
                 Log.d("TOKEN", token.toString());
                 Log.d("HOLA", "HOLAAAA");
                 //Hacemos una conexión al servidor PHP
@@ -121,7 +138,7 @@ public class Menu extends AppCompatActivity {
                 hm.put("token", token);
 
                 conexion.realizarConexion("firebase", hm);
-
+*/
             }
         });
 
@@ -208,7 +225,7 @@ public class Menu extends AppCompatActivity {
     private void mostrarPuntosYMonedas() {
 
         //Hacemos una consulta a la BD
-
+/*
         BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
@@ -223,6 +240,140 @@ public class Menu extends AppCompatActivity {
         }
         cursor.close();
         GestorDB.close();
+*/
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Menu.this);
+        HashMap<String, String> hm = new HashMap<String,String>();
+        hm.put("usuario", user);
+
+        conexion.realizarConexion("mostrarpuntosmonedas", hm);
+
+    }
+
+
+    public void getUsuariosJSON(){
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Menu.this);
+        HashMap<String, String> hm = new HashMap<String,String>();
+        hm.put("usuario", user);
+        conexion.realizarConexion("listarusuarios", hm);
+
+    }
+
+
+    public void ejecutarResultadoListadoUsuarios(String resultado) throws JSONException {
+
+        //Decodificar los usuarios
+        JSONArray jsonarray = new JSONArray(resultado);
+        Log.d("json", jsonarray.get(0).toString());
+
+        String[] listausuarios = new String[jsonarray.length()];
+        String[] listatokens = new String[jsonarray.length()];
+
+        for(int x = 0; x < jsonarray.length(); x++){
+            JSONObject jsonusuario = (JSONObject) jsonarray.get(x);
+            listausuarios[x] = (String) jsonusuario.get("USUARIO");
+            listatokens[x] = (String) jsonusuario.get("TOKEN");
+        }
+
+        Log.d("LISTAUSUARIOS", listausuarios[0].toString());
+        Log.d("LISTATOKENS", listatokens[0].toString());
+
+
+        seleccionarUsuario(listausuarios, listatokens);
+
+    }
+
+
+    private void seleccionarUsuario(String[] listausuarios, String[] listatokens){
+
+        AlertDialog.Builder b = new AlertDialog.Builder(Menu.this);
+        b.setTitle("Elige un usuario para enviar dinero");
+
+        b.setItems(listausuarios, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+                Toast.makeText(Menu.this, "Has seleccionado " + listausuarios[which], Toast.LENGTH_SHORT).show();
+
+                seleccionarDinero(listausuarios[which], listatokens[which]);
+
+            }
+
+        });
+
+        b.show();
+
+
+    }
+
+
+    private void seleccionarDinero(String usuario, String token){
+
+        EditText inputEditTextField = new EditText(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("¿Cuánto dinero le quieres enviar a " + usuario + "?")
+                .setView(inputEditTextField)
+                .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String dinero = inputEditTextField.getText().toString();
+                        //Toast.makeText(Menu.this, "Has querido mandar " + editTextInput, Toast.LENGTH_SHORT).show();
+                        if(Integer.parseInt(dinero) > Integer.parseInt(monedas.getText().toString())){
+                           //No tengo suficiente dinero para enviar
+                           //Bajamos el teclado
+                            View view = Menu.this.getCurrentFocus();
+                            if (view != null) {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                            }
+
+
+                            Toast.makeText(Menu.this, "No puedes enviar tal cantidad", Toast.LENGTH_SHORT).show();
+                        }else{
+
+                            //Puedo mandar el dinero
+
+                            ConexionBDWebService conexion = new ConexionBDWebService(Menu.this);
+                            HashMap<String, String> hm = new HashMap<String,String>();
+                            hm.put("token", token);
+
+                            conexion.realizarConexion("firebase", hm);
+
+
+
+                        }
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .create();
+        dialog.show();
+
+    }
+
+
+    public void ejecutarResultadoMostradoPuntosMonedas(String resultado){
+
+        try {
+          //  JSONArray jsonarray = new JSONArray(resultado);
+
+            JSONObject jsonpm = new JSONObject(resultado);
+
+            String p = jsonpm.get("PUNTOS").toString();
+            String m = jsonpm.get("MONEDAS").toString();
+
+            puntos.setText(p);
+            monedas.setText(m);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 

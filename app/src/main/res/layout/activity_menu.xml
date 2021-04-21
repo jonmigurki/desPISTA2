@@ -95,7 +95,7 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/btnMensaje"
+                    android:id="@+id/btnEnviarDinero"
                     style="@style/boton"
                     android:layout_width="wrap_content"
                     android:layout_height="51dp"
@@ -106,7 +106,7 @@
                     android:drawableLeft="@drawable/compartir"
                     android:scaleX="1"
                     android:scaleY="1"
-                    android:text="Mensaje" />
+                    android:text="Enviar Dinero" />
 
             </LinearLayout>
 

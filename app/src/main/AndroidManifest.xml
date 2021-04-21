@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DesPISTAdos2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Registro2"></activity>
+        <activity android:name=".EnviarDinero"></activity>
         <activity android:name=".Ajustes" />
         <activity android:name=".Adivinanza" />
         <activity android:name=".Nivel" />
@@ -21,6 +21,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,7 +31,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 

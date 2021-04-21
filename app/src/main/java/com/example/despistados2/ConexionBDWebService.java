@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,8 +50,9 @@ public class ConexionBDWebService {
                 contrasena = parametros.get("contrasena");
                 nombre = parametros.get("nombre");
                 apellidos = parametros.get("apellidos");
+                token = parametros.get("token");
 
-                registrarUsuario(usuario, contrasena, nombre, apellidos);
+                registrarUsuario(usuario, contrasena, nombre, apellidos, token);
 
                 break;
 
@@ -69,6 +72,21 @@ public class ConexionBDWebService {
 
                 enviarMensaje(token);
 
+                break;
+
+            case "listarusuarios":
+
+                usuario = parametros.get("usuarios");
+
+                listarUsuarios(usuario);
+
+                break;
+
+            case "mostrarpuntosmonedas":
+
+                usuario = parametros.get("usuario");
+
+                mostrarPuntosMonedas(usuario);
         }
 
 
@@ -83,10 +101,10 @@ public class ConexionBDWebService {
 
     }
 
-    private void registrarUsuario(String usuario, String contrasena, String nombre, String apellidos) {
+    private void registrarUsuario(String usuario, String contrasena, String nombre, String apellidos, String token) {
 
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/registrar.php?usuario=" + usuario + "&contrasena=" +
-                contrasena + "&nombre=" + nombre + "&apellidos=" + apellidos;
+                contrasena + "&nombre=" + nombre + "&apellidos=" + apellidos + "&token=" + token;
 
         new AsyncLogin().execute(url);
 
@@ -109,6 +127,24 @@ public class ConexionBDWebService {
 
         new AsyncLogin().execute(url);
 
+    }
+
+
+    private void listarUsuarios(String usuario){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/listarusuarios.php?usuario=" + usuario;
+
+        new AsyncLogin().execute(url);
+
+
+    }
+
+
+    private void mostrarPuntosMonedas(String usuario){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario;
+
+        new AsyncLogin().execute(url);
     }
 
 
@@ -219,10 +255,24 @@ public class ConexionBDWebService {
                     if(funcion.equals("comprobacion")){
                         r.ejecutarResultadoComprobacion(result);
                     }else if(funcion.equals("registro")){
-                        r.ejecutarResultadoRegistro(result);
+                        r.ejecutarResultadoRegistro(result.toString());
                     }
                     break;
 
+                case "class com.example.despistados2.Menu":
+                    Menu menu = (Menu) context;
+
+                    if(funcion.equals("listarusuarios")) {
+                        try {
+                            menu.ejecutarResultadoListadoUsuarios(result);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else if(funcion.equals("mostrarpuntosmonedas")){
+                        menu.ejecutarResultadoMostradoPuntosMonedas(result);
+                    }
+
+                    break;
 
 
             }

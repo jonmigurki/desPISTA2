@@ -8,12 +8,19 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -27,6 +34,8 @@ public class Registro extends AppCompatActivity {
     Button btnRegistrarse;
 
     Context context;
+
+    String token = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,21 @@ public class Registro extends AppCompatActivity {
         context = this.getApplicationContext();
 
 
+        //Obtenemos el token del dispositivo
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task.isSuccessful()){
+                    Log.d("ERROR EN FIREBASE", String.valueOf(task.getException()));
+                    return;
+                }
+
+                token = task.getResult().getToken();
+            }
+        });
+
+
+
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,35 +111,7 @@ public class Registro extends AppCompatActivity {
 
                         conexion.realizarConexion("comprobacion", hm);
 
-                /*    BD GestorDB = new BD(context, "BD", null, 1);
-                    SQLiteDatabase bd = GestorDB.getReadableDatabase();
 
-                    //Miramos en la BD
-                    Cursor cursor = bd.rawQuery("SELECT USUARIO FROM USUARIOS WHERE USUARIO = '" + usuarioR.getText().toString() + "'", null);
-
-                    int cursorCount = cursor.getCount();
-                    cursor.close();
-                    GestorDB.close();
-
-                    if (cursorCount > 0) {
-                        //Hay algun usuario con ese nombre en la BD
-                        Toast.makeText(getApplicationContext(), m2, Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        //Realizamos el registro
-
-                        GestorDB = new BD(context, "BD", null, 1);
-                        bd = GestorDB.getWritableDatabase();
-
-                        bd.execSQL("INSERT INTO USUARIOS(USUARIO, CONTRASENA, PUNTOS, MONEDAS) VALUES ('" + usuarioR.getText().toString() + "', '" + contrasenaR.getText().toString() + "', 0, 50)");
-
-                        Intent i = new Intent(Registro.this, Menu.class);
-                        i.putExtra("usuario", usuarioR.getText().toString());
-                        startActivity(i);
-                        finish();
-
-                    }*/
                 }
             }
         });
@@ -186,6 +182,11 @@ public class Registro extends AppCompatActivity {
             hm.put("contrasena", contrasenaR.getText().toString());
             hm.put("nombre", nombreR.getText().toString());
             hm.put("apellidos", apellidosR.getText().toString());
+
+
+
+
+            hm.put("token", token);
 
             conexion.realizarConexion("registro", hm);
 
