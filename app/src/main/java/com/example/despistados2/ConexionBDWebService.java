@@ -31,7 +31,7 @@ public class ConexionBDWebService {
 
         this.funcion = funcion;
        // HashMap<String, String> hm = new HashMap<String, String>();
-        String usuario, contrasena, nombre, apellidos, token;
+        String usuario, contrasena, nombre, apellidos, token, monedas, imagen;
 
         switch (funcion) {
 
@@ -69,8 +69,10 @@ public class ConexionBDWebService {
             case "firebase":
 
                 token = parametros.get("token");
+                monedas = parametros.get("monedas");
+                usuario = parametros.get("usuario");
 
-                enviarMensaje(token);
+                enviarMensaje(token, monedas, usuario);
 
                 break;
 
@@ -87,6 +89,15 @@ public class ConexionBDWebService {
                 usuario = parametros.get("usuario");
 
                 mostrarPuntosMonedas(usuario);
+
+                break;
+
+            case "actualizar":
+
+                usuario = parametros.get("usuario");
+                imagen = parametros.get("imagen");
+
+                actualizarDatos(usuario, imagen);
         }
 
 
@@ -119,9 +130,9 @@ public class ConexionBDWebService {
     }
 
 
-    private void enviarMensaje(String token){
+    private void enviarMensaje(String token, String monedas, String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/enviarmensaje.php?token=" + token;
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/enviarmensaje.php?usuario=" + usuario + "&monedas=" + monedas + "&token=" + token;
 
         Log.d("TOKEN", token);
 
@@ -134,6 +145,8 @@ public class ConexionBDWebService {
 
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/listarusuarios.php?usuario=" + usuario;
 
+        Log.d("URL", url);
+
         new AsyncLogin().execute(url);
 
 
@@ -145,6 +158,16 @@ public class ConexionBDWebService {
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario;
 
         new AsyncLogin().execute(url);
+    }
+
+
+    private void actualizarDatos(String usuario, String imagen){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&imagen=" + imagen;
+
+        new AsyncLogin().execute(url);
+
+
     }
 
 

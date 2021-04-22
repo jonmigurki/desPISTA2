@@ -41,7 +41,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
             }
 
             elBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("FIREBASE")
+                    .setContentTitle("desPISTA2")
                     .setContentText(m)
                     .setVibrate(new long[]{0, 1000, 500, 1000})
                     .setAutoCancel(true);

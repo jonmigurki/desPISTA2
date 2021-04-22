@@ -43,7 +43,7 @@ public class Menu extends AppCompatActivity {
 
     //Obtenemos los elementos del layout
     TextView usuario, puntos, monedas;
-    Button compartir, enviarDinero;
+    Button compartir, enviarDinero, modificarDatos;
 
     Context context;
 
@@ -87,6 +87,24 @@ public class Menu extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+
+        //Obtenemos el usuario que se ha identificado
+        String u = "";
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            u = extras.getString("usuario");
+        }
+
+        //Hacemos que se visualicen el nombre del usuario, sus puntos y sus monedas en la ventana
+        usuario = (TextView) findViewById(R.id.txtIdentificado);
+        usuario.setText(u);
+        user = u;
+        puntos = (TextView) findViewById(R.id.txtPuntos1);
+        monedas = (TextView) findViewById(R.id.txtMonedas1);
+        mostrarPuntosYMonedas();
+
+
 
         //Establecemos el contexto de la aplicación
         context = this.getApplicationContext();
@@ -142,26 +160,23 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+
+        modificarDatos = (Button) findViewById(R.id.btnModificarDatos);
+        modificarDatos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Menu.this, Modificar.class);
+
+
+                startActivity(i);
+                finish();
+            }
+        });
+
         //Accedemos al ListView y creamos el adaptador que visualizará las categorías cargadas
         ListView lista = (ListView) findViewById(R.id.lista1);
         AdaptadorCategorias eladap= new AdaptadorCategorias(getApplicationContext(),categorias);
         lista.setAdapter(eladap);
-
-        //Obtenemos el usuario que se ha identificado
-        String u = "";
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            u = extras.getString("usuario");
-        }
-
-        //Hacemos que se visualicen el nombre del usuario, sus puntos y sus monedas en la ventana
-        usuario = (TextView) findViewById(R.id.txtIdentificado);
-        usuario.setText(u);
-        user = u;
-        puntos = (TextView) findViewById(R.id.txtPuntos1);
-        monedas = (TextView) findViewById(R.id.txtMonedas1);
-        mostrarPuntosYMonedas();
-
 
         //Cuando el usuario seleccione una categoría, realizaremos un Intent explícito a una nueva ventana
         //para visualizarle los niveles disponibles en esa categoría. Además, necesitaremos pasarle el nombre
@@ -256,6 +271,7 @@ public class Menu extends AppCompatActivity {
         ConexionBDWebService conexion = new ConexionBDWebService(Menu.this);
         HashMap<String, String> hm = new HashMap<String,String>();
         hm.put("usuario", user);
+        Log.d("USUARIO", user);
         conexion.realizarConexion("listarusuarios", hm);
 
     }
@@ -340,6 +356,8 @@ public class Menu extends AppCompatActivity {
                             ConexionBDWebService conexion = new ConexionBDWebService(Menu.this);
                             HashMap<String, String> hm = new HashMap<String,String>();
                             hm.put("token", token);
+                            hm.put("monedas", dinero);
+                            hm.put("usuario", user);
 
                             conexion.realizarConexion("firebase", hm);
 
