@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -25,10 +26,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Adivinanza extends AppCompatActivity {
@@ -76,7 +81,7 @@ public class Adivinanza extends AppCompatActivity {
         configuration.setLayoutDirection(nuevaloc);
 
         Context context2 = getBaseContext().createConfigurationContext(configuration);
-        getBaseContext().getResources().updateConfiguration(configuration,context2.getResources().getDisplayMetrics());
+        getBaseContext().getResources().updateConfiguration(configuration, context2.getResources().getDisplayMetrics());
 
 
         super.onCreate(savedInstanceState);
@@ -125,11 +130,12 @@ public class Adivinanza extends AppCompatActivity {
         usuarioI.setText(usuario);
         mostrarPuntosYMonedas();
 
+        //Método que se encarga de comprobar cuántas pistas están abiertas en este nivel
+        obtenerDatosUsuario();
+
         //Comprobamos si este nivel está resuelto o no y actualizamos el booleano a la variable global
         resuelto();
 
-        //Método que se encarga de comprobar cuántas pistas están abiertas en este nivel
-        obtenerDatosUsuario();
 
         //Cargamos las pistas
         pistas = obtenerPistas();
@@ -248,7 +254,7 @@ public class Adivinanza extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                                 resolver();
-                                mostrarNotificacion();
+                              //  mostrarNotificacion();
 
                             }
                         });
@@ -315,7 +321,7 @@ public class Adivinanza extends AppCompatActivity {
                         pistasAbiertas = actualizarListaPistas();
                         AdaptadorPistas adap = new AdaptadorPistas(getApplicationContext(), pistasAbiertas);
                         lista.setAdapter(adap);
-
+/*
                         //Actualizamos la base de datos para guardar el número de pistas utilizadas
                         BD GestorDB = new BD(context, "BD", null, 1);
                         SQLiteDatabase bd = GestorDB.getWritableDatabase();
@@ -323,6 +329,17 @@ public class Adivinanza extends AppCompatActivity {
                         //Miramos en la BD
                         bd.execSQL("UPDATE LOGROS SET PISTAS=" + pistasUtilizadas + " WHERE USUARIO = '" + usuario + "' AND " +
                                 "CATEGORIA = '" + num_cat + "' AND NIVEL = '" + num_niv + "'");
+*/
+
+
+                        ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+                        HashMap<String, String> hm = new HashMap<String, String>();
+                        hm.put("usuario", usuario);
+                        hm.put("categoria", num_cat);
+                        hm.put("nivel", num_niv);
+                        hm.put("pistasUtilizadas", String.valueOf(pistasUtilizadas));
+                        conexion.realizarConexion("actualizarPistasUtilizadas", hm);
+
 
                     }
                 } else {
@@ -416,6 +433,9 @@ public class Adivinanza extends AppCompatActivity {
 
                             alertdialog.show();
 
+                            Log.d("ESTOY AQUI 11111111", "ESTOY AQUIIIIII");
+
+
                             //Actualizamos los puntos y monedas del usuario
                             puntosUsuario = puntosUsuario + pm;
                             monedasUsuario = monedasUsuario + pm;
@@ -427,7 +447,7 @@ public class Adivinanza extends AppCompatActivity {
                             //Si los puntos <0 => rojo /// si >=0 => negro
                             actualizarColorPuntos();
 
-                            BD GestorDB = new BD(context, "BD", null, 1);
+                         /*   BD GestorDB = new BD(context, "BD", null, 1);
                             SQLiteDatabase bd = GestorDB.getWritableDatabase();
                             bd.execSQL("UPDATE LOGROS SET RESUELTO=1 WHERE USUARIO = '" + usuario + "' AND " +
                                     "CATEGORIA = '" + num_cat + "' AND NIVEL = '" + num_niv + "'");
@@ -435,10 +455,22 @@ public class Adivinanza extends AppCompatActivity {
                             bd.execSQL("UPDATE USUARIOS SET PUNTOS=" + puntosUsuario + " WHERE USUARIO='" + usuario + "'");
                             bd.execSQL("UPDATE USUARIOS SET MONEDAS=" + monedasUsuario + " WHERE USUARIO='" + usuario + "'");
 
+                            */
+
+                            ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+                            HashMap<String, String> hm = new HashMap<String, String>();
+                            hm.put("usuario", usuario);
+                            hm.put("categoria", num_cat);
+                            hm.put("nivel", num_niv);
+                            hm.put("puntos", String.valueOf(puntos));
+                            hm.put("monedas", String.valueOf(monedas));
+                            conexion.realizarConexion("actualizarNivelResuelto", hm);
+
+
                             resuelto();
 
                             //Comprobamos que se hayan finalizado todos los niveles de la categoría elegida para mostrar la notificación
-                            mostrarNotificacion();
+                          //  mostrarNotificacion();
 
 
                         } else {
@@ -485,10 +517,16 @@ public class Adivinanza extends AppCompatActivity {
 
                             actualizarColorPuntos();
 
-                            BD GestorDB = new BD(context, "BD", null, 1);
+                           /* BD GestorDB = new BD(context, "BD", null, 1);
                             SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
                             bd.execSQL("UPDATE USUARIOS SET PUNTOS=" + puntosUsuario + " WHERE USUARIO='" + usuario + "'");
+*/
+                            ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+                            HashMap<String, String> hm = new HashMap<String, String>();
+                            hm.put("usuario", usuario);
+                            hm.put("puntos", String.valueOf(puntos));
+                            conexion.realizarConexion("actualizarRestarPuntos", hm);
 
 
                         }
@@ -512,13 +550,13 @@ public class Adivinanza extends AppCompatActivity {
     }
 
     //Si los puntos son negativos, se visualizan en rojo
-    private void actualizarColorPuntos(){
+    private void actualizarColorPuntos() {
 
-        if(puntosUsuario<0){
+        if (puntosUsuario < 0) {
             puntos.setText(String.valueOf(puntosUsuario));
             puntos.setTextColor(Color.RED);
 
-        }else{
+        } else {
             puntos.setTextColor(Color.BLACK);
         }
 
@@ -526,13 +564,12 @@ public class Adivinanza extends AppCompatActivity {
     }
 
 
-
     //Método privado que se encarga de mostrar los puntos y las monedas que el usuario tiene (se hace una consulta a la BD)
     private void mostrarPuntosYMonedas() {
 
         //Hacemos una consulta a la BD
 
-        BD GestorDB = new BD(context, "BD", null, 1);
+    /*    BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
         //Miramos en la BD
@@ -548,16 +585,23 @@ public class Adivinanza extends AppCompatActivity {
             monedas.setText(String.valueOf(m));
         }
         cursor.close();
-        GestorDB.close();
+        GestorDB.close();*/
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("usuario", usuario);
+
+        conexion.realizarConexion("mostrarpuntosmonedas", hm);
+
 
     }
 
 
     //Si nunca se ha almacenado nada sobre este nivel (el usuario nunca ha entrado) se actualiza la base de datos
     //indicando que el número de pistas utilizadas para este nivel es 1 (ya se ha abierto una)
-    private void obtenerDatosUsuario(){
+    private void obtenerDatosUsuario() {
 
-        BD GestorDB = new BD(context, "BD", null, 1);
+     /*   BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
         //Miramos en la BD
@@ -566,7 +610,7 @@ public class Adivinanza extends AppCompatActivity {
 
         int cursorCount = cursor.getCount();
 
-        if(cursorCount==0){         //El usuario nunca ha entrado en este nivel de esta categoría, por lo que hacemos un INSERT
+        if (cursorCount == 0) {         //El usuario nunca ha entrado en este nivel de esta categoría, por lo que hacemos un INSERT
 
             bd.execSQL("INSERT INTO LOGROS ('USUARIO', 'CATEGORIA', 'NIVEL', 'RESUELTO', 'PISTAS') VALUES ('" + usuario + "', " + Integer.valueOf(num_cat) +
                     ", " + Integer.valueOf(num_niv) + ", 0, 1)");
@@ -574,8 +618,7 @@ public class Adivinanza extends AppCompatActivity {
             pistasUtilizadas = 1;
 
 
-
-        }else{
+        } else {
 
             if (cursor.moveToFirst()) {
                 int pistas = cursor.getInt(cursor.getColumnIndex("PISTAS"));
@@ -587,11 +630,18 @@ public class Adivinanza extends AppCompatActivity {
         }
 
 
-
-
-
         cursor.close();
         GestorDB.close();
+
+*/
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("usuario", usuario);
+        hm.put("categoria", num_cat);
+        hm.put("nivel", num_niv);
+
+        conexion.realizarConexion("mostrarPistas", hm);
 
 
 
@@ -599,8 +649,34 @@ public class Adivinanza extends AppCompatActivity {
     }
 
 
+    public void ejecutarResultadoMostradoPistas(String resultado){
+
+
+        if(resultado.equals("OK")){
+            pistasUtilizadas = 1;
+        }
+    else {
+
+            JSONObject jsonpm = null;
+            try {
+                jsonpm = new JSONObject(resultado);
+
+
+                String p = jsonpm.get("PISTAS").toString();
+
+                pistasUtilizadas = Integer.valueOf(p);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
     //Se lee el fichero .txt y se obtienen las pistas en base a la categoría y el nivel elegido
-    private String[] obtenerPistas(){
+    private String[] obtenerPistas() {
 
         InputStream is = this.getResources().openRawResource(R.raw.data_es);
 
@@ -620,29 +696,27 @@ public class Adivinanza extends AppCompatActivity {
 
             boolean pistasEncontradas = false;
 
-            while(!pistasEncontradas){
+            while (!pistasEncontradas) {
 
                 linea = reader.readLine();
 
-                if(linea.equals(niv)){
-                    pistasEncontradas=true;
+                if (linea.equals(niv)) {
+                    pistasEncontradas = true;
 
                 }
 
             }
 
-            for(int x = 0; x < 5; x++){
+            for (int x = 0; x < 5; x++) {
 
                 linea = reader.readLine();
 
                 String[] l = linea.split(";");
 
-                p[x]=l[1];
+                p[x] = l[1];
 
 
             }
-
-
 
 
         } catch (IOException e) {
@@ -653,17 +727,16 @@ public class Adivinanza extends AppCompatActivity {
         return p;
 
 
-
     }
 
 
-    private String[] actualizarListaPistas(){
+    private String[] actualizarListaPistas() {
 
         String[] p = new String[pistasUtilizadas];
 
-        for(int x=0; x < pistasUtilizadas; x++){
+        for (int x = 0; x < pistasUtilizadas; x++) {
 
-            p[x]=pistas[x];
+            p[x] = pistas[x];
 
 
         }
@@ -674,9 +747,9 @@ public class Adivinanza extends AppCompatActivity {
 
 
     //Método que se encarga de calcular los puntos y monedas para el usuario en base a las pistas utilizadas
-    private int calcularPuntosMonedas(){
+    private int calcularPuntosMonedas() {
 
-        switch(pistasUtilizadas) {
+        switch (pistasUtilizadas) {
 
             case 1:
                 return 10;
@@ -699,36 +772,33 @@ public class Adivinanza extends AppCompatActivity {
     }
 
 
-
-
-
-    private void resolver(){
+    private void resolver() {
 
         //Se le muestra un Dialog al usuario con la respuesta y se le restan 20 monedas
 
         //Bajar teclado
         View view = Adivinanza.this.getCurrentFocus();
-        if(view!=null){
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
         //Mostramos el dialog indicando que el usuario ha fallado
-        AlertDialog.Builder alertdialog=new AlertDialog.Builder(Adivinanza.this);
+        AlertDialog.Builder alertdialog = new AlertDialog.Builder(Adivinanza.this);
 
         String m1 = "";
         String m2 = "";
-        if(String.valueOf(getResources().getConfiguration().locale).contains("es")){
+        if (String.valueOf(getResources().getConfiguration().locale).contains("es")) {
             m1 = "La respuesta correcta era...";
             m2 = "Qué lástima que no hayas podido adivinarlo. Seguro que el próximo nivel lo acertarás a la primera :D";
-        }else{
+        } else {
             m1 = "The correct answer was...";
             m2 = "What a shame, you couldn't guess it. I'm sure you will rock next level :D";
         }
 
         alertdialog.setTitle(m1 + " " + niv);
         alertdialog.setMessage(m2);
-        alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+        alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -738,17 +808,27 @@ public class Adivinanza extends AppCompatActivity {
         alertdialog.show();
 
 
-        monedasUsuario = monedasUsuario-20;
+        monedasUsuario = monedasUsuario - 20;
         monedas.setText(String.valueOf(monedasUsuario));
 
 
-        BD GestorDB = new BD(context, "BD", null, 1);
+     /*   BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
         bd.execSQL("UPDATE USUARIOS SET MONEDAS=" + monedasUsuario + " WHERE USUARIO='" + usuario + "'");
 
         bd.execSQL("UPDATE LOGROS SET RESUELTO=1 WHERE USUARIO = '" + usuario + "' AND " +
                 "CATEGORIA = '" + num_cat + "' AND NIVEL = '" + num_niv + "'");
+*/
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("usuario", usuario);
+        hm.put("categoria", num_cat);
+        hm.put("nivel", num_niv);
+        hm.put("puntos", String.valueOf(puntos));
+        hm.put("monedas", String.valueOf(monedas));
+        conexion.realizarConexion("actualizarNivelResuelto", hm);
 
 
         resuelto();
@@ -757,12 +837,12 @@ public class Adivinanza extends AppCompatActivity {
     }
 
 
-    private void resuelto(){
+    private void resuelto() {
 
 
         //Hacemos una consulta a la BD
 
-        BD GestorDB = new BD(context, "BD", null, 1);
+        /*BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
         //Miramos en la BD
@@ -770,26 +850,59 @@ public class Adivinanza extends AppCompatActivity {
                 "CATEGORIA = '" + num_cat + "' AND NIVEL = '" + num_niv + "'", null);
 
 
-
         if (cursor.moveToFirst()) {
             int r = cursor.getInt(cursor.getColumnIndex("RESUELTO"));
 
-            if(r==0){
+            if (r == 0) {
                 resuelto = false;
-            }else{
+            } else {
                 resuelto = true;
             }
         }
 
         cursor.close();
         GestorDB.close();
+*/
+
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Adivinanza.this);
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("usuario", usuario);
+        hm.put("categoria", num_cat);
+        hm.put("nivel", num_niv);
+        conexion.realizarConexion("mostrarResuelto", hm);
+
+
+    }
+
+
+    public void ejecutarResultadoMostradoResuelto(String resultado){
+
+        JSONObject jsonpm = null;
+        try {
+            jsonpm = new JSONObject(resultado);
+
+
+            String r = jsonpm.get("RESUELTO").toString();
+
+            if(r.equals("1")){
+                resuelto = true;
+            }else if(r.equals("0")){
+                resuelto = false;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
 
 
     }
 
 
     //Método que se va a encargar de mostrar una notificación si todos los niveles de una categoría han sido adivinados
-    private void mostrarNotificacion(){
+    private void mostrarNotificacion() {
 
         BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
@@ -829,7 +942,7 @@ public class Adivinanza extends AppCompatActivity {
             nm.notify(12345, elBuilder.build());
 
 
-            monedasUsuario = monedasUsuario+20;
+            monedasUsuario = monedasUsuario + 20;
 
             GestorDB = new BD(context, "BD", null, 1);
             bd = GestorDB.getWritableDatabase();
@@ -840,13 +953,10 @@ public class Adivinanza extends AppCompatActivity {
             monedas.setText(String.valueOf(monedasUsuario));
 
 
-
         }
 
 
-
     }
-
 
 
     //Método que se encarga de visualizar un Dialog cuando el usuario le da al botón de atrás de su teléfono
@@ -856,20 +966,20 @@ public class Adivinanza extends AppCompatActivity {
         String texto2 = "";
         String texto3 = "";
 
-        if(String.valueOf(getResources().getConfiguration().locale).contains("es")){
+        if (String.valueOf(getResources().getConfiguration().locale).contains("es")) {
             texto1 = "Salir";
             texto2 = "¿Estás segur@ de que quieres cerrar sesión?";
             texto3 = "Sí";
-        }else{
+        } else {
             texto1 = "Exit";
             texto2 = "Are you sure you want to log out?";
             texto3 = "Yes";
         }
 
-        AlertDialog.Builder alertdialog=new AlertDialog.Builder(this);
+        AlertDialog.Builder alertdialog = new AlertDialog.Builder(this);
         alertdialog.setTitle(texto1);
         alertdialog.setMessage(texto2);
-        alertdialog.setPositiveButton(texto3, new DialogInterface.OnClickListener(){
+        alertdialog.setPositiveButton(texto3, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //    Menu.super.onBackPressed();
@@ -891,5 +1001,25 @@ public class Adivinanza extends AppCompatActivity {
     }
 
 
+    public void ejecutarResultadoMostradoPuntosMonedas(String resultado) {
+
+        try {
+            //  JSONArray jsonarray = new JSONArray(resultado);
+
+            JSONObject jsonpm = new JSONObject(resultado);
+
+            String p = jsonpm.get("PUNTOS").toString();
+            String m = jsonpm.get("MONEDAS").toString();
+
+            puntos.setText(p);
+            monedas.setText(m);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 }

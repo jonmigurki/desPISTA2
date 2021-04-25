@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     public void ejecutarResultadoIdentificacion(String resultado){
 
         if(resultado.equals("1")){
+
             Intent i = new Intent(MainActivity.this, Menu.class);
             i.putExtra("usuario", user);
             startActivity(i);

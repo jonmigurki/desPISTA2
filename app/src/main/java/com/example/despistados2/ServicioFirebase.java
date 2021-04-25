@@ -3,6 +3,7 @@ package com.example.despistados2;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,9 +21,9 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
     public void onMessageReceived(RemoteMessage remoteMessage){
         if(remoteMessage.getData().size() > 0){
-            Log.d("HOLAA HAS RECIBIDO ALGO", "AVAV");
 
-            String m = remoteMessage.getData().get("message");
+            String notification = remoteMessage.getData().get("notification");
+            String title = remoteMessage.getData().get("title");
 
             NotificationManager nm = (NotificationManager) getSystemService(Menu.NOTIFICATION_SERVICE);
             NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(this, "firebase");
@@ -41,37 +42,25 @@ public class ServicioFirebase extends FirebaseMessagingService {
             }
 
             elBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("desPISTA2")
-                    .setContentText(m)
+                    .setContentTitle(title)
+                    .setContentText(notification)
                     .setVibrate(new long[]{0, 1000, 500, 1000})
                     .setAutoCancel(true);
 
 
             nm.notify(12345, elBuilder.build());
 
-        }
 
-        if(remoteMessage.getNotification() != null){
 
-            Log.d("ESTOY AQUI", "ESTOY AQUI");
-            String m = remoteMessage.getData().get("body");
-
-            Intent i = new Intent(this, Menu.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            PendingIntent pi = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setAutoCancel(true)
-                    .setContentTitle("FIREBASE")
-                    .setContentText(m)
-                    .setContentIntent(pi);
-
-            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-            manager.notify(0,builder.build());
+            //////////////////////////////////////////////////
+            Context context = this.getApplicationContext();
+            Menu menu = (Menu) context;
+            menu.mostrarPuntosYMonedas();
+            //////////////////////////////////////////////////
 
         }
+
+
     }
 
 }

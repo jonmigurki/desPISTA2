@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -26,12 +25,17 @@ public class ConexionBDWebService {
         this.context = c;
     }
 
+    //Cuando generamos una instancia de esta clase, le pasamos también el contexto de la actividad
+    //desde donde se genera, para así poder regresar a ella una vez hecha la conexión a la BD remota
 
     public void realizarConexion(String funcion, HashMap<String, String> parametros) {
 
+        //Le pasamos los parámetros que necesitaremos para las distintas conexiones,
+        //y la función que debe realizar (identificación, comprobación, registro, mostrado de puntos y monedas, etc.)
+
+
         this.funcion = funcion;
-       // HashMap<String, String> hm = new HashMap<String, String>();
-        String usuario, contrasena, nombre, apellidos, token, monedas, imagen;
+        String usuario, contrasena, nombre, apellidos, token, puntos, monedas, imagen, categoria, nivel, pistasUtilizadas;
 
         switch (funcion) {
 
@@ -92,23 +96,116 @@ public class ConexionBDWebService {
 
                 break;
 
-            case "actualizar":
+
+            case "mostrardatosusuario":
 
                 usuario = parametros.get("usuario");
+
+                mostrarDatosUsuario(usuario);
+
+                break;
+
+
+            case "mostrarimagenusuario":
+
+                usuario = parametros.get("usuario");
+
+                mostrarImagenUsuario(usuario);
+
+                break;
+
+            case "actualizarPistasUtilizadas":
+
+                usuario = parametros.get("usuario");
+                categoria = parametros.get("categoria");
+                nivel = parametros.get("nivel");
+                pistasUtilizadas = parametros.get("pistasUtilizadas");
+
+                actualizarPistasUtilizadas(usuario, categoria, nivel, pistasUtilizadas);
+
+                break;
+
+            case "actualizarNivelResuelto":
+
+                usuario = parametros.get("usuario");
+                categoria = parametros.get("categoria");
+                nivel = parametros.get("nivel");
+                puntos = parametros.get("puntos");
+                monedas = parametros.get("monedas");
+
+                actualizarNivelResuelto(usuario, categoria, nivel, puntos, monedas);
+
+                break;
+
+            case "actualizarRestarPuntos":
+
+                usuario = parametros.get("usuario");
+                puntos = parametros.get("puntos");
+
+                actualizarRestarPuntos(usuario, puntos);
+
+                break;
+
+
+            case "mostrarPistas":
+
+                usuario = parametros.get("usuario");
+                categoria = parametros.get("categoria");
+                nivel = parametros.get("nivel");
+
+                mostrarPistas(usuario, categoria, nivel);
+
+                break;
+
+
+            case "mostrarResuelto":
+
+                usuario = parametros.get("usuario");
+                categoria = parametros.get("categoria");
+                nivel = parametros.get("nivel");
+
+                mostrarResuelto(usuario, categoria, nivel);
+
+                break;
+
+            case "enviarDinero":
+
+                usuario = parametros.get("usuario");
+                token = parametros.get("token");
+                monedas = parametros.get("monedas");
+
+                enviarDinero(usuario, token, monedas);
+
+                break;
+
+            case "actualizarDatosUsuario":
+
+                usuario = parametros.get("usuario");
+                contrasena = parametros.get("contrasena");
+                nombre = parametros.get("nombre");
+                apellidos = parametros.get("apellidos");
                 imagen = parametros.get("imagen");
 
-                actualizarDatos(usuario, imagen);
+                actualizarDatosUsuario(usuario, contrasena, nombre, apellidos, imagen);
+
+                break;
+
         }
 
 
     }
 
 
+
+    /*
+    Le especificamos la url con toda la información que necesitará (conexiones GET)
+     */
+
     private void identificarUsuario(String usuario, String contrasena) {
 
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=false";
 
-        new AsyncLogin().execute(url);
+        new AsyncGET().execute(url);
 
     }
 
@@ -117,7 +214,7 @@ public class ConexionBDWebService {
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/registrar.php?usuario=" + usuario + "&contrasena=" +
                 contrasena + "&nombre=" + nombre + "&apellidos=" + apellidos + "&token=" + token;
 
-        new AsyncLogin().execute(url);
+        new AsyncGET().execute(url);
 
     }
 
@@ -125,7 +222,7 @@ public class ConexionBDWebService {
 
         String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=true";
 
-        new AsyncLogin().execute(url);
+        new AsyncGET().execute(url);
 
     }
 
@@ -136,7 +233,7 @@ public class ConexionBDWebService {
 
         Log.d("TOKEN", token);
 
-        new AsyncLogin().execute(url);
+        new AsyncGET().execute(url);
 
     }
 
@@ -147,7 +244,7 @@ public class ConexionBDWebService {
 
         Log.d("URL", url);
 
-        new AsyncLogin().execute(url);
+        new AsyncGET().execute(url);
 
 
     }
@@ -155,17 +252,109 @@ public class ConexionBDWebService {
 
     private void mostrarPuntosMonedas(String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario;
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=puntosmonedas";
 
-        new AsyncLogin().execute(url);
+        new AsyncGET().execute(url);
     }
 
 
-    private void actualizarDatos(String usuario, String imagen){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&imagen=" + imagen;
+    private void mostrarDatosUsuario(String usuario){
 
-        new AsyncLogin().execute(url);
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=datos";
+
+        new AsyncGET().execute(url);
+
+    }
+
+
+    private void mostrarImagenUsuario(String usuario){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=imagen";
+
+        new AsyncGET().execute(url);
+
+
+    }
+
+    private void actualizarPistasUtilizadas(String usuario, String categoria, String nivel, String pistasUtilizadas){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&categoria=" + categoria +
+                "&nivel=" + nivel + "&pistasutilizadas=" + pistasUtilizadas + "&actualizar=pistas";
+
+        new AsyncGET().execute(url);
+
+
+
+    }
+
+    private void actualizarNivelResuelto(String usuario, String categoria, String nivel, String puntos, String monedas){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&categoria=" + categoria +
+                "&nivel=" + nivel + "&puntos=" + puntos + "&monedas=" + monedas + "&actualizar=resuelto";
+
+        new AsyncGET().execute(url);
+
+
+    }
+
+    private void actualizarRestarPuntos(String usuario, String puntos){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&puntos=" + puntos +
+               "&actualizar=restarpuntos";
+
+        new AsyncGET().execute(url);
+
+
+    }
+
+
+    private void mostrarPistas(String usuario, String categoria, String nivel){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&categoria=" + categoria +
+                "&nivel=" + nivel + "&mostrar=pistas";
+
+        new AsyncGET().execute(url);
+
+
+
+
+    }
+
+
+    private void mostrarResuelto(String usuario, String categoria, String nivel){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&categoria=" + categoria +
+                "&nivel=" + nivel + "&mostrar=resuelto";
+
+        new AsyncGET().execute(url);
+
+
+
+
+    }
+
+
+    private void enviarDinero(String usuario, String token, String monedas){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&token=" + token +
+                "&monedas=" + monedas + "&actualizar=enviardinero";
+
+        new AsyncGET().execute(url);
+
+
+
+
+
+    }
+
+
+    private void actualizarDatosUsuario(String usuario, String contrasena, String nombre, String apellidos, String imagen){
+
+        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&contrasena=" + contrasena +
+                "&nombre=" + nombre + "&apellidos=" + apellidos + "&imagen=" + imagen + "&actualizar=datosusuario";
+
+        new AsyncGET().execute(url);
 
 
     }
@@ -180,13 +369,16 @@ public class ConexionBDWebService {
         */
 
 
-    public class AsyncLogin extends AsyncTask<String, String, String> {
+    public class AsyncGET extends AsyncTask<String, String, String> {
 
 
         ProgressDialog pd = new ProgressDialog(context);
         HttpURLConnection conn;
         URL url = null;
 
+
+
+        //Método que se ejecuta mientras está realizándose la conexión
 
         @Override
         protected void onPreExecute() {
@@ -199,6 +391,7 @@ public class ConexionBDWebService {
         }
 
 
+        //Conexión a la BD
         @Override
         protected String doInBackground(String... params) {
 
@@ -257,9 +450,10 @@ public class ConexionBDWebService {
         }
 
 
+        //Una vez finalizada la conexión, recogemos el resultado y hacemos las llamadas
+        //a las actividades desde donde provenía la llamada para finalizar con las ejecuciones
         protected void onPostExecute(String result) {
 
-            Log.d("RESULTADO", result.toString());
 
 
             pd.dismiss();
@@ -274,6 +468,8 @@ public class ConexionBDWebService {
                     break;
 
                 case "class com.example.despistados2.Registro":
+                    Log.d("REGISTROOO", "REGISTROOO");
+                    Log.d("resultadooo", result);
                     Registro r = (Registro) context;
                     if(funcion.equals("comprobacion")){
                         r.ejecutarResultadoComprobacion(result);
@@ -296,6 +492,40 @@ public class ConexionBDWebService {
                     }
 
                     break;
+
+
+                case "class com.example.despistados2.Nivel":
+                    Nivel nivel = (Nivel) context;
+
+                    if(funcion.equals("mostrarpuntosmonedas")){
+                        nivel.ejecutarResultadoMostradoPuntosMonedas(result);
+                    }
+
+                    break;
+
+                case "class com.example.despistados2.Adivinanza":
+                    Adivinanza adivinanza = (Adivinanza) context;
+
+                    if(funcion.equals("mostrarpuntosmonedas")){
+                        adivinanza.ejecutarResultadoMostradoPuntosMonedas(result);
+                    }else if(funcion.equals("mostrarPistas")){
+                        adivinanza.ejecutarResultadoMostradoPistas(result);
+                    }else if(funcion.equals("mostrarResuelto")){
+                        adivinanza.ejecutarResultadoMostradoResuelto(result);
+                    }
+
+                    break;
+
+                case "class com.example.despistados2.Modificar":
+
+                    Modificar modificar = (Modificar) context;
+
+                    if(funcion.equals("mostrardatosusuario")){
+                        modificar.ejecutarResultadoMostradoDatos(result);
+                    }
+
+                    break;
+
 
 
             }

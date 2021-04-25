@@ -47,19 +47,45 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="20dp" />
 
             <Button
                 android:id="@+id/btnCompartir"
                 style="@style/boton"
-                android:layout_width="172dp"
-                android:layout_height="51dp"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:background="#FFFFFF"
                 android:drawableLeft="@drawable/compartir"
                 android:scaleX="1"
                 android:scaleY="1"
                 android:text="@string/btnCompartir" />
+
+            <Button
+                android:id="@+id/btnEnviarDinero"
+                style="@style/boton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:drawableLeft="@drawable/compartir"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:text="Enviar Dinero" />
+
+            <Button
+                android:id="@+id/btnModificarDatos"
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="#3F51B5"
+                android:backgroundTint="#3F51B5"
+                android:gravity="center"
+                android:text="Modificar datos usuario" />
 
         </LinearLayout>
 

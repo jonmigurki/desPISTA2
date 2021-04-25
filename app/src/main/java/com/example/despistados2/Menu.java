@@ -166,7 +166,7 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Menu.this, Modificar.class);
-
+                i.putExtra("usuario", user);
 
                 startActivity(i);
                 finish();
@@ -237,7 +237,7 @@ public class Menu extends AppCompatActivity {
 
 
     //Método privado que se encarga de mostrar los puntos y las monedas que el usuario tiene (se hace una consulta a la BD)
-    private void mostrarPuntosYMonedas() {
+    public void mostrarPuntosYMonedas() {
 
         //Hacemos una consulta a la BD
 /*
@@ -362,6 +362,15 @@ public class Menu extends AppCompatActivity {
                             conexion.realizarConexion("firebase", hm);
 
 
+                            ///////OTRA CONEXION A LA BASE DE DATOS REMOTA PARA ENVIAR DINERO ///////
+
+                            conexion = new ConexionBDWebService(Menu.this);
+                            hm = new HashMap<String, String>();
+                            hm.put("usuario", user);
+                            hm.put("token", token);
+                            hm.put("monedas", dinero);
+
+                            conexion.realizarConexion("enviarDinero", hm);
 
                         }
                     }
@@ -369,6 +378,8 @@ public class Menu extends AppCompatActivity {
                 .setNegativeButton("Cancelar", null)
                 .create();
         dialog.show();
+
+        mostrarPuntosYMonedas();
 
     }
 

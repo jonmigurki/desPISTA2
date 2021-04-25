@@ -16,10 +16,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Nivel extends AppCompatActivity {
@@ -211,7 +215,7 @@ public class Nivel extends AppCompatActivity {
 
         //Hacemos una consulta a la BD
 
-        BD GestorDB = new BD(context, "BD", null, 1);
+    /*    BD GestorDB = new BD(context, "BD", null, 1);
         SQLiteDatabase bd = GestorDB.getWritableDatabase();
 
         //Miramos en la BD
@@ -224,7 +228,15 @@ public class Nivel extends AppCompatActivity {
             monedas.setText(String.valueOf(m));
         }
         cursor.close();
-        GestorDB.close();
+        GestorDB.close();*/
+
+        ConexionBDWebService conexion = new ConexionBDWebService(Nivel.this);
+        HashMap<String, String> hm = new HashMap<String,String>();
+        hm.put("usuario", usuario);
+
+        conexion.realizarConexion("mostrarpuntosmonedas", hm);
+
+
 
     }
 
@@ -271,6 +283,28 @@ public class Nivel extends AppCompatActivity {
 
     }
 
+
+    public void ejecutarResultadoMostradoPuntosMonedas(String resultado){
+
+        try {
+            //  JSONArray jsonarray = new JSONArray(resultado);
+
+            JSONObject jsonpm = new JSONObject(resultado);
+
+            String p = jsonpm.get("PUNTOS").toString();
+            String m = jsonpm.get("MONEDAS").toString();
+
+            puntos.setText(p);
+            monedas.setText(m);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
 
 
 }
