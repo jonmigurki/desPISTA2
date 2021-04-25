@@ -128,6 +128,7 @@ public class Adivinanza extends AppCompatActivity {
         //Y escribimos el usuario identificado y mostramos los puntos y monedas de éste
         usuarioI = (TextView) findViewById(R.id.txtIdentificado);
         usuarioI.setText(usuario);
+
         mostrarPuntosYMonedas();
 
         //Método que se encarga de comprobar cuántas pistas están abiertas en este nivel
@@ -462,8 +463,8 @@ public class Adivinanza extends AppCompatActivity {
                             hm.put("usuario", usuario);
                             hm.put("categoria", num_cat);
                             hm.put("nivel", num_niv);
-                            hm.put("puntos", String.valueOf(puntos));
-                            hm.put("monedas", String.valueOf(monedas));
+                            hm.put("puntos", String.valueOf(puntosUsuario));
+                            hm.put("monedas", String.valueOf(monedasUsuario));
                             conexion.realizarConexion("actualizarNivelResuelto", hm);
 
 
@@ -826,8 +827,8 @@ public class Adivinanza extends AppCompatActivity {
         hm.put("usuario", usuario);
         hm.put("categoria", num_cat);
         hm.put("nivel", num_niv);
-        hm.put("puntos", String.valueOf(puntos));
-        hm.put("monedas", String.valueOf(monedas));
+        hm.put("puntos", String.valueOf(puntosUsuario));
+        hm.put("monedas", String.valueOf(monedasUsuario));
         conexion.realizarConexion("actualizarNivelResuelto", hm);
 
 
@@ -900,7 +901,7 @@ public class Adivinanza extends AppCompatActivity {
 
     }
 
-
+/*
     //Método que se va a encargar de mostrar una notificación si todos los niveles de una categoría han sido adivinados
     private void mostrarNotificacion() {
 
@@ -957,7 +958,7 @@ public class Adivinanza extends AppCompatActivity {
 
 
     }
-
+*/
 
     //Método que se encarga de visualizar un Dialog cuando el usuario le da al botón de atrás de su teléfono
     public void onBackPressed() {
@@ -1013,6 +1014,12 @@ public class Adivinanza extends AppCompatActivity {
 
             puntos.setText(p);
             monedas.setText(m);
+
+            puntosUsuario = Integer.parseInt(p);
+            monedasUsuario = Integer.parseInt(m);
+
+            Log.d("Puntos del usuario", String.valueOf(puntosUsuario));
+            Log.d("Monedas del usuario", String.valueOf(monedasUsuario));
 
 
         } catch (JSONException e) {

@@ -21,4 +21,6 @@
     <string name="btnPista">Pista</string>
     <string name="btnResolver">Resolver</string>
     <string name="btnCompartir">Compartir</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

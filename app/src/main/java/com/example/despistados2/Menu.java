@@ -379,7 +379,7 @@ public class Menu extends AppCompatActivity {
                 .create();
         dialog.show();
 
-        mostrarPuntosYMonedas();
+       // mostrarPuntosYMonedas();
 
     }
 

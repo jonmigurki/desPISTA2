@@ -82,7 +82,7 @@ public class ConexionBDWebService {
 
             case "listarusuarios":
 
-                usuario = parametros.get("usuarios");
+                usuario = parametros.get("usuario");
 
                 listarUsuarios(usuario);
 
@@ -454,7 +454,9 @@ public class ConexionBDWebService {
         //a las actividades desde donde provenía la llamada para finalizar con las ejecuciones
         protected void onPostExecute(String result) {
 
-
+            if(!result.equals("")){
+                Log.d("FUNCION " + funcion, result);
+            }
 
             pd.dismiss();
 
@@ -489,6 +491,8 @@ public class ConexionBDWebService {
                         }
                     }else if(funcion.equals("mostrarpuntosmonedas")){
                         menu.ejecutarResultadoMostradoPuntosMonedas(result);
+                    }else if(funcion.equals("firebase")){
+                        menu.mostrarPuntosYMonedas();
                     }
 
                     break;
