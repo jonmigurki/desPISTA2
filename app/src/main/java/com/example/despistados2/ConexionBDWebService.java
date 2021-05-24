@@ -203,7 +203,7 @@ public class ConexionBDWebService {
 
     private void identificarUsuario(String usuario, String contrasena) {
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=false";
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=false";
 
         new AsyncGET().execute(url);
 
@@ -211,7 +211,7 @@ public class ConexionBDWebService {
 
     private void registrarUsuario(String usuario, String contrasena, String nombre, String apellidos, String token) {
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/registrar.php?usuario=" + usuario + "&contrasena=" +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/registrar.php?usuario=" + usuario + "&contrasena=" +
                 contrasena + "&nombre=" + nombre + "&apellidos=" + apellidos + "&token=" + token;
 
         new AsyncGET().execute(url);
@@ -220,7 +220,7 @@ public class ConexionBDWebService {
 
     private void comprobarUsuario(String usuario, String contrasena){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=true";
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/identificar.php?usuario=" + usuario + "&contrasena=" + contrasena + "&comprobar=true";
 
         new AsyncGET().execute(url);
 
@@ -229,7 +229,7 @@ public class ConexionBDWebService {
 
     private void enviarMensaje(String token, String monedas, String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/enviarmensaje.php?usuario=" + usuario + "&monedas=" + monedas + "&token=" + token;
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/enviarmensaje.php?usuario=" + usuario + "&monedas=" + monedas + "&token=" + token;
 
         Log.d("TOKEN", token);
 
@@ -240,7 +240,7 @@ public class ConexionBDWebService {
 
     private void listarUsuarios(String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/listarusuarios.php?usuario=" + usuario;
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/listarusuarios.php?usuario=" + usuario;
 
         Log.d("URL", url);
 
@@ -252,7 +252,7 @@ public class ConexionBDWebService {
 
     private void mostrarPuntosMonedas(String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=puntosmonedas";
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=puntosmonedas";
 
         new AsyncGET().execute(url);
     }
@@ -261,7 +261,7 @@ public class ConexionBDWebService {
 
     private void mostrarDatosUsuario(String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=datos";
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=datos";
 
         new AsyncGET().execute(url);
 
@@ -270,7 +270,7 @@ public class ConexionBDWebService {
 
     private void mostrarImagenUsuario(String usuario){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=imagen";
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&mostrar=imagen";
 
         new AsyncGET().execute(url);
 
@@ -279,7 +279,7 @@ public class ConexionBDWebService {
 
     private void actualizarPistasUtilizadas(String usuario, String categoria, String nivel, String pistasUtilizadas){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&categoria=" + categoria +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&categoria=" + categoria +
                 "&nivel=" + nivel + "&pistasutilizadas=" + pistasUtilizadas + "&actualizar=pistas";
 
         new AsyncGET().execute(url);
@@ -290,7 +290,7 @@ public class ConexionBDWebService {
 
     private void actualizarNivelResuelto(String usuario, String categoria, String nivel, String puntos, String monedas){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&categoria=" + categoria +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&categoria=" + categoria +
                 "&nivel=" + nivel + "&puntos=" + puntos + "&monedas=" + monedas + "&actualizar=resuelto";
 
         new AsyncGET().execute(url);
@@ -300,7 +300,7 @@ public class ConexionBDWebService {
 
     private void actualizarRestarPuntos(String usuario, String puntos){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&puntos=" + puntos +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&puntos=" + puntos +
                "&actualizar=restarpuntos";
 
         new AsyncGET().execute(url);
@@ -311,7 +311,7 @@ public class ConexionBDWebService {
 
     private void mostrarPistas(String usuario, String categoria, String nivel){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&categoria=" + categoria +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&categoria=" + categoria +
                 "&nivel=" + nivel + "&mostrar=pistas";
 
         new AsyncGET().execute(url);
@@ -324,7 +324,7 @@ public class ConexionBDWebService {
 
     private void mostrarResuelto(String usuario, String categoria, String nivel){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&categoria=" + categoria +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/mostrar.php?usuario=" + usuario + "&categoria=" + categoria +
                 "&nivel=" + nivel + "&mostrar=resuelto";
 
         new AsyncGET().execute(url);
@@ -337,7 +337,7 @@ public class ConexionBDWebService {
 
     private void enviarDinero(String usuario, String token, String monedas){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&token=" + token +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&token=" + token +
                 "&monedas=" + monedas + "&actualizar=enviardinero";
 
         new AsyncGET().execute(url);
@@ -351,7 +351,7 @@ public class ConexionBDWebService {
 
     private void actualizarDatosUsuario(String usuario, String contrasena, String nombre, String apellidos, String imagen){
 
-        String url = "http://ec2-54-167-31-169.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&contrasena=" + contrasena +
+        String url = "http://ec2-54-242-79-204.compute-1.amazonaws.com/jmiguel013/WEB/actualizar.php?usuario=" + usuario + "&contrasena=" + contrasena +
                 "&nombre=" + nombre + "&apellidos=" + apellidos + "&imagen=" + imagen + "&actualizar=datosusuario";
 
         new AsyncGET().execute(url);

@@ -68,8 +68,6 @@ public class Modificar extends AppCompatActivity {
     public static final int CAMERA_PERM_CODE = 101;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +78,6 @@ public class Modificar extends AppCompatActivity {
         if (extras != null) {
             usuario = extras.getString("usuario");
         }
-
 
 
         btnSacarFoto = (Button) findViewById(R.id.btnSacarFoto);
@@ -120,16 +117,15 @@ public class Modificar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //dispatchTakePictureIntent();
 
                 //Pedimos permiso a la camara
                 askCameraPermissions();
 
 
 
+
             }
         });
-
 
 
         btnGuardarModificar.setOnClickListener(new View.OnClickListener() {
@@ -138,27 +134,28 @@ public class Modificar extends AppCompatActivity {
 
 
                 //Si alguno de los campos se queda vacío, se muestra un Toast indicando que el usuario debe escribir en los 3
-               if(txtContrasena.getText().toString().equals("") || txtNombre.getText().toString().equals("")
-               || txtApellidos.getText().toString().equals("")){
-                   Toast.makeText(Modificar.this, "NO puedes dejar ningún campo vacío", Toast.LENGTH_SHORT).show();
-               }else {
+                if (txtContrasena.getText().toString().equals("") || txtNombre.getText().toString().equals("")
+                        || txtApellidos.getText().toString().equals("")) {
+                    Toast.makeText(Modificar.this, "NO puedes dejar ningún campo vacío", Toast.LENGTH_SHORT).show();
+                } else {
 
-                   //Cuando el usuario pulsa "Guardar" y se comprueba que hay algo escrito en los EditTexts, se sube la imagen
-                   // a Firebase y se realiza una conexión a la BD remota para actualizar los datos del usuario
-                   uploadImageToFirebase(file.getName(), uri);
+                    //Cuando el usuario pulsa "Guardar" y se comprueba que hay algo escrito en los EditTexts, se sube la imagen
+                    // a Firebase y se realiza una conexión a la BD remota para actualizar los datos del usuario
+                   // uploadImageToFirebase(file.getName(), uri);
+                    uploadImageToFirebase(file.getName(), uri);
 
-                   ConexionBDWebService conexion = new ConexionBDWebService(Modificar.this);
-                   HashMap<String, String> hm = new HashMap<String, String>();
-                   hm.put("usuario", usuario);
-                   hm.put("contrasena", txtContrasena.getText().toString());
-                   hm.put("nombre", txtNombre.getText().toString());
-                   hm.put("apellidos", txtApellidos.getText().toString());
-                   hm.put("imagen", file.getName());
+                    ConexionBDWebService conexion = new ConexionBDWebService(Modificar.this);
+                    HashMap<String, String> hm = new HashMap<String, String>();
+                    hm.put("usuario", usuario);
+                    hm.put("contrasena", txtContrasena.getText().toString());
+                    hm.put("nombre", txtNombre.getText().toString());
+                    hm.put("apellidos", txtApellidos.getText().toString());
+                    hm.put("imagen", file.getName());
 
-                   conexion.realizarConexion("actualizarDatosUsuario", hm);
+                    conexion.realizarConexion("actualizarDatosUsuario", hm);
 
-                   Toast.makeText(Modificar.this, "Cambios actualizados", Toast.LENGTH_SHORT).show();
-               }
+                    Toast.makeText(Modificar.this, "Cambios actualizados", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
@@ -167,8 +164,7 @@ public class Modificar extends AppCompatActivity {
     }
 
 
-
-    public void ejecutarResultadoMostradoDatos(String resultado){
+    public void ejecutarResultadoMostradoDatos(String resultado) {
 
         try {
 
@@ -183,7 +179,7 @@ public class Modificar extends AppCompatActivity {
 
             //Si existe una imagen almacenada en la BD (también habría en Firebase) se muestra un Toast
             //indicando que se está cargando, ya que tarda
-            if(!imagen.equals("")){
+            if (!imagen.equals("")) {
                 Toast.makeText(Modificar.this, "Se está cargando la imagen", Toast.LENGTH_SHORT).show();
             }
 
@@ -203,7 +199,6 @@ public class Modificar extends AppCompatActivity {
             });
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -219,13 +214,15 @@ public class Modificar extends AppCompatActivity {
         */
 
 
-
     //Se pide permiso para abrir la cámara si es que ese permiso no está ya dado
     private void askCameraPermissions() {
-        if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-        }else {
-            dispatchTakePictureIntent();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        } else {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, 1000);
+            }
         }
 
     }
@@ -234,23 +231,27 @@ public class Modificar extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                File f = new File(currentPhotoPath);
-                imageView.setImageURI(Uri.fromFile(f));
 
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                Uri contentUri = Uri.fromFile(f);
-                mediaScanIntent.setData(contentUri);
-                this.sendBroadcast(mediaScanIntent);
-
-                //Guardamos en las variables globales file y uri la imagen generada (de ahí obtendremos el nombre)
-                //y la dirección (path) de ella
-                file = f;
-                uri = contentUri;
-
+        if (requestCode == 1000 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap miniatura = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(miniatura);
+            File eldirectorio = this.getFilesDir();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+            File fichero = new File(eldirectorio, usuario + ".jpg");
+            OutputStream os;
+            try {
+                os = new FileOutputStream(fichero);
+                miniatura.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                os.flush();
+                os.close();
+            } catch (Exception e) {
 
             }
+
+            uri = Uri.fromFile(fichero);
+            file = fichero;
+
         }
     }
 
@@ -280,50 +281,6 @@ public class Modificar extends AppCompatActivity {
     }
 
 
-    private File createImageFile () throws IOException {
-
-            //Creamos la imagen
 
 
-        String imageFileName = usuario;
-
-            File storageDir = this.getFilesDir();
-
-        File image = File.createTempFile(
-                        imageFileName,  /* prefijo */
-                        ".jpg",         /* sufijo */
-                        storageDir      /* directorio */
-                );
-
-                currentPhotoPath = image.getAbsolutePath();
-                return image;
-
-            }
-
-
-            public void dispatchTakePictureIntent () {
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (photoFile != null) {
-                        Uri photoURI = FileProvider.getUriForFile(Modificar.this,
-                                "com.example.despistados2.fileprovider",
-                                photoFile);
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-                    }
-                }
-            }
-
-        }
-
-
+}

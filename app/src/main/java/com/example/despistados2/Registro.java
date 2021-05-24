@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+//import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -69,7 +69,7 @@ public class Registro extends AppCompatActivity {
 
 
         //Obtenemos el token del dispositivo
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+  /*      FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
                 if(!task.isSuccessful()){
@@ -80,7 +80,7 @@ public class Registro extends AppCompatActivity {
                 token = task.getResult().getToken();
             }
         });
-
+*/
 
 
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
